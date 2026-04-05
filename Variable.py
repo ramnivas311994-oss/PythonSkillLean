@@ -13,4 +13,5 @@ print(job)
 print(salary)
 print(likes_coding)
 print(current_year)
+print(2>1) #boolean
 
