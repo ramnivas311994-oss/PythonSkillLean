@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python AI/ML Study Plan</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #13161d;
+      --surface2: #1a1e28;
+      --border: rgba(255, 255, 255, 0.07);
+      --border2: rgba(255, 255, 255, 0.13);
+      --text: #e8eaf0;
+      --muted: #7a7f94;
+      --dim: #3d4257;
+      --green: #4ade80;
+      --green-dim: rgba(74, 222, 128, 0.12);
+      --green-border: rgba(74, 222, 128, 0.3);
+      --blue: #60a5fa;
+      --blue-dim: rgba(96, 165, 250, 0.12);
+      --blue-border: rgba(96, 165, 250, 0.3);
+      --purple: #a78bfa;
+      --purple-dim: rgba(167, 139, 250, 0.12);
+      --purple-border: rgba(167, 139, 250, 0.3);
+      --amber: #fbbf24;
+      --amber-dim: rgba(251, 191, 36, 0.12);
+      --amber-border: rgba(251, 191, 36, 0.3);
+      --accent: #4ade80;
+      --radius: 10px;
+      --font-mono: 'Space Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 2.5rem;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .title-block {}
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-family: var(--font-mono);
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+
+    .stat-chip {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      background: var(--surface);
+    }
+
+    /* Progress */
+    .progress-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .progress-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .progress-count {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .progress-track {
+      height: 5px;
+      background: var(--surface2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), #86efac);
+      border-radius: 99px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    /* Phase tabs */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.03em;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--border2);
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    .tab-btn.active {
+      color: var(--text);
+      border-color: var(--active-color, var(--green));
+      background: var(--active-bg, var(--green-dim));
+    }
+
+    /* Phase card */
+    .phase-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .phase-top {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .phase-name {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+      display: inline-block;
+    }
+
+    .phase-title {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .phase-duration {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .phase-progress-mini {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+      white-space: nowrap;
+      padding-top: 4px;
+    }
+
+    .phase-progress-mini span {
+      color: var(--active-color, var(--green));
+    }
+
+    /* Sections */
+    .section-block {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-block:last-child {
+      border-bottom: none;
+    }
+
+    .section-header {
+      padding: 10px 1.5rem 6px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dim);
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Topics */
+    .topic-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 11px 1.5rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.12s;
+      cursor: pointer;
+    }
+
+    .topic-row:last-child {
+      border-bottom: none;
+    }
+
+    .topic-row:hover {
+      background: var(--surface2);
+    }
+
+    .check {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      border-radius: 4px;
+      border: 1.5px solid var(--dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .check.done {
+      background: var(--green-dim);
+      border-color: var(--green);
+    }
+
+    .check.done::after {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 9px;
+      border: 2px solid var(--green);
+      border-left: none;
+      border-top: none;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
+    .topic-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .topic-text.done {
+      color: var(--dim);
+      text-decoration: line-through;
+    }
+
+    .topic-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-weight: 300;
+    }
+
+    .proj-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--amber-dim);
+      color: var(--amber);
+      border: 1px solid var(--amber-border);
+      margin-left: 8px;
+      vertical-align: middle;
+      letter-spacing: 0.04em;
+    }
+
+    /* Resources */
+    .resources-row {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface2);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .res-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-right: 4px;
+    }
+
+    .res-chip {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 99px;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      background: transparent;
+      transition: all 0.12s;
+    }
+
+    .res-chip:hover {
+      border-color: var(--active-color, var(--green));
+      color: var(--text);
+    }
+
+    /* footer */
+    footer {
+      margin-top: 2.5rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* Responsive */
+    @media (max-width: 540px) {
+      .phase-top {
+        flex-direction: column;
+      }
+
+      .topic-row {
+        padding: 10px 1rem;
+      }
+
+      .section-header {
+        padding: 8px 1rem 6px;
+      }
+
+      .resources-row {
+        padding: 0.75rem 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+
+    <header>
+      <div class="header-top">
+        <div class="title-block">
+          <div class="eyebrow">// study plan</div>
+          <h1>Python <span>&amp;</span> AI/ML</h1>
+          <div class="stats-row">
+            <span class="stat-chip">4–7 hrs / week</span>
+            <span class="stat-chip">9–12 months</span>
+            <span class="stat-chip">4 phases</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="progress-block">
+      <div class="progress-meta">
+        <span class="progress-label">Overall progress</span>
+        <span class="progress-count" id="prog-text">0 / 0 topics</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+    <div id="phase-content"></div>
+
+    <footer>built for your git · check off as you go · good luck</footer>
+  </div>
+
+  <script>
+    const phases = [
+      {
+        id: 0,
+        label: "P1 · Foundations",
+        title: "Python foundations",
+        duration: "Weeks 1–10 · ~6 hrs/week",
+        badge: "START HERE",
+        color: "--green", bg: "--green-dim", border: "--green-border",
+        sections: [
+          {
+            name: "Core Python", topics: [
+              { text: "Data types & variables", sub: "strings, ints, floats, booleans, None, type()" },
+              { text: "String methods & formatting", sub: "f-strings, .split(), .strip(), .join(), .format()" },
+              { text: "Control flow", sub: "if/elif/else, for/while loops, break/continue, range()" },
+              { text: "Functions & scope", sub: "def, return, default args, *args, **kwargs, global vs local" },
+              { text: "Lambda & built-in functions", sub: "map(), filter(), zip(), enumerate(), sorted()" },
+              { text: "Recursion basics", sub: "factorial, fibonacci — understand the call stack" },
+            ]
+          },
+          {
+            name: "Data structures", topics: [
+              { text: "Lists in depth", sub: "slicing, list comprehensions, nested lists, sort vs sorted" },
+              { text: "Dicts & sets", sub: "dict comprehensions, .get(), .items(), set operations" },
+              { text: "Tuples & immutability", sub: "when to use tuples, unpacking, namedtuple" },
+              { text: "Stacks, queues & deques", sub: "collections.deque, LIFO/FIFO patterns" },
+            ]
+          },
+          {
+            name: "Working with code", topics: [
+              { text: "File I/O", sub: "open(), read/write modes, with statement, pathlib" },
+              { text: "Error handling", sub: "try/except/finally, raising exceptions, custom errors" },
+              { text: "Modules & packages", sub: "import, from x import y, __name__, sys.path" },
+              { text: "Virtual environments & pip", sub: "venv, pip install, requirements.txt, pip freeze" },
+              { text: "Debugging skills", sub: "print debugging, pdb, reading tracebacks" },
+            ]
+          },
+          {
+            name: "Object-oriented Python", topics: [
+              { text: "Classes & objects", sub: "__init__, self, instance vs class attributes" },
+              { text: "Methods & properties", sub: "instance methods, @classmethod, @staticmethod, @property" },
+              { text: "Inheritance & polymorphism", sub: "super(), method overriding, isinstance()" },
+              { text: "Dunder/magic methods", sub: "__str__, __repr__, __len__, __eq__" },
+            ]
+          },
+          {
+            name: "Mini-projects", topics: [
+              { text: "Number guessing game", sub: "uses loops, functions, input()", proj: true },
+              { text: "Contact book CLI app", sub: "uses dicts, file I/O, error handling", proj: true },
+              { text: "Simple bank account class", sub: "uses OOP: deposit, withdraw, balance", proj: true },
+            ]
+          },
+        ],
+        resources: ["Automate the Boring Stuff (free)", "Python.org docs", "freeCodeCamp Python", "Exercism.io Python track"]
+      },
+      {
+        id: 1,
+        label: "P2 · Data work",
+        title: "Data work with Python",
+        duration: "Weeks 11–22 · ~6 hrs/week",
+        badge: "CORE TOOLS",
+        color: "--blue", bg: "--blue-dim", border: "--blue-border",
+        sections: [
+          {
+            name: "NumPy", topics: [
+              { text: "Arrays & dtypes", sub: "np.array(), shape, reshape, dtype, zeros/ones/arange" },
+              { text: "Indexing & slicing", sub: "boolean indexing, fancy indexing, np.where()" },
+              { text: "Broadcasting & vectorization", sub: "avoid loops — operate on whole arrays" },
+              { text: "Math & statistics", sub: "mean, std, sum, dot products, linear algebra basics" },
+              { text: "Random module", sub: "np.random.seed(), rand, randn, choice — essential for ML" },
+            ]
+          },
+          {
+            name: "Pandas — core", topics: [
+              { text: "Series & DataFrame basics", sub: "creation, index, columns, dtypes, info(), head()" },
+              { text: "Reading & writing data", sub: "read_csv, read_excel, read_json, to_csv" },
+              { text: "Selecting & filtering", sub: "loc, iloc, boolean masks, query()" },
+              { text: "Adding & transforming columns", sub: "assign(), apply(), map(), lambda on columns" },
+              { text: "Sorting & ranking", sub: "sort_values(), sort_index(), rank()" },
+            ]
+          },
+          {
+            name: "Pandas — advanced", topics: [
+              { text: "Groupby & aggregations", sub: "groupby(), agg(), transform(), named aggregations" },
+              { text: "Merging & joining", sub: "merge(), join(), concat() — inner/outer/left/right" },
+              { text: "Reshaping data", sub: "pivot_table(), melt(), stack(), unstack()" },
+              { text: "Time series basics", sub: "datetime index, resample(), rolling(), shift()" },
+              { text: "Performance tips", sub: "vectorize over apply, use categoricals, avoid loops" },
+            ]
+          },
+          {
+            name: "Data cleaning", topics: [
+              { text: "Handling missing data", sub: "isnull(), dropna(), fillna(), interpolate()" },
+              { text: "Duplicate & outlier handling", sub: "drop_duplicates(), IQR method, z-score filtering" },
+              { text: "String cleaning", sub: "str accessor, regex with str.contains(), str.extract()" },
+              { text: "Type conversion & encoding", sub: "astype(), pd.Categorical, get_dummies()" },
+            ]
+          },
+          {
+            name: "Visualization", topics: [
+              { text: "Matplotlib fundamentals", sub: "fig/ax pattern, line/bar/scatter/hist, labels, titles" },
+              { text: "Seaborn statistical plots", sub: "heatmap, pairplot, boxplot, violinplot, lmplot" },
+              { text: "Plotly for interactive charts", sub: "plotly.express — zoom/hover, great for EDA" },
+              { text: "Choosing the right chart", sub: "distribution, comparison, relationship, composition" },
+            ]
+          },
+          {
+            name: "EDA & Jupyter", topics: [
+              { text: "Jupyter notebooks workflow", sub: "cells, markdown, magic commands, %timeit, %matplotlib" },
+              { text: "Exploratory data analysis", sub: "describe(), value_counts(), corr(), profiling reports" },
+              { text: "Feature understanding", sub: "distributions, skew, outliers, class imbalance" },
+            ]
+          },
+          {
+            name: "Mini-projects", topics: [
+              { text: "Clean & analyze a messy real dataset", sub: "e.g. Titanic, NYC 311, or any Kaggle dataset", proj: true },
+              { text: "Full EDA report in a notebook", sub: "10+ charts, insights, markdown story", proj: true },
+              { text: "Time series analysis mini-project", sub: "analyze stock prices or weather data with Pandas", proj: true },
+            ]
+          },
+        ],
+        resources: ["Kaggle free courses", "Pandas docs", "NumPy docs", "Python for Data Analysis (book)", "Towards Data Science"]
+      },
+      {
+        id: 2,
+        label: "P3 · Machine Learning",
+        title: "Machine learning",
+        duration: "Weeks 23–34 · ~6 hrs/week",
+        badge: "ML CORE",
+        color: "--purple", bg: "--purple-dim", border: "--purple-border",
+        sections: [
+          {
+            name: "Concepts & scikit-learn", topics: [
+              { text: "ML concepts", sub: "supervised vs unsupervised, train/test split, bias-variance" },
+              { text: "Scikit-learn workflow", sub: "fit(), predict(), pipelines, preprocessing, ColumnTransformer" },
+              { text: "Feature engineering", sub: "scaling, encoding, feature selection, interaction terms" },
+            ]
+          },
+          {
+            name: "Models", topics: [
+              { text: "Regression models", sub: "linear, ridge, lasso, ElasticNet — metrics: RMSE, R²" },
+              { text: "Classification models", sub: "logistic regression, KNN, decision trees, SVM" },
+              { text: "Ensemble methods", sub: "random forests, gradient boosting, XGBoost, LightGBM" },
+              { text: "Clustering", sub: "K-Means, DBSCAN, hierarchical — unsupervised basics" },
+            ]
+          },
+          {
+            name: "Evaluation & tuning", topics: [
+              { text: "Model evaluation", sub: "confusion matrix, ROC-AUC, precision/recall, F1" },
+              { text: "Cross-validation", sub: "k-fold, stratified k-fold, leave-one-out" },
+              { text: "Hyperparameter tuning", sub: "GridSearchCV, RandomizedSearchCV, Optuna" },
+              { text: "First Kaggle competition", sub: "Titanic or House Prices — submit and iterate!", proj: true },
+            ]
+          },
+        ],
+        resources: ["Scikit-learn docs", "Kaggle Intro to ML", "Hands-On ML (book)", "StatQuest on YouTube"]
+      },
+      {
+        id: 3,
+        label: "P4 · AI & Deep Learning",
+        title: "AI & deep learning",
+        duration: "Weeks 35–48+ · ~6 hrs/week",
+        badge: "ADVANCED",
+        color: "--amber", bg: "--amber-dim", border: "--amber-border",
+        sections: [
+          {
+            name: "Deep learning", topics: [
+              { text: "Neural network basics", sub: "neurons, layers, activation functions, backprop" },
+              { text: "PyTorch or Keras", sub: "build, train, evaluate neural nets from scratch" },
+              { text: "Computer vision intro", sub: "CNNs, image classification, transfer learning" },
+              { text: "NLP & text data", sub: "tokenization, embeddings, sentiment analysis" },
+            ]
+          },
+          {
+            name: "AI & LLMs", topics: [
+              { text: "Using LLM APIs", sub: "OpenAI / Anthropic APIs, prompt engineering" },
+              { text: "LangChain / RAG basics", sub: "build a simple AI-powered app end-to-end" },
+              { text: "Capstone project", sub: "full project of your choice — your portfolio piece", proj: true },
+            ]
+          },
+        ],
+        resources: ["fast.ai (free)", "DeepLearning.ai", "HuggingFace docs", "Anthropic & OpenAI docs"]
+      }
+    ];
+
+    let active = 0;
+    const state = {};
+
+    function allTopics() {
+      return phases.flatMap(p => p.sections.flatMap(s => s.topics.map((_, i) => `${p.id}-${s.name}-${i}`)));
+    }
+    function doneCount() { return Object.values(state).filter(Boolean).length; }
+
+    function updateProgress() {
+      const total = allTopics().length;
+      const done = doneCount();
+      const pct = total ? Math.round(done / total * 100) : 0;
+      document.getElementById('prog-text').textContent = `${done} / ${total} topics`;
+      document.getElementById('prog-fill').style.width = pct + '%';
+    }
+
+    function getCSSVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function renderTabs() {
+      document.getElementById('tabs').innerHTML = phases.map(p => {
+        const isActive = p.id === active;
+        const colorVar = p.color;
+        const bgVar = p.bg;
+        let style = '';
+        if (isActive) {
+          style = `style="color:var(${colorVar});border-color:var(${colorVar});background:var(${bgVar});"`;
+        }
+        return `<button class="tab-btn ${isActive ? 'active' : ''}" ${style} onclick="switchPhase(${p.id})">${p.label}</button>`;
+      }).join('');
+    }
+
+    function renderPhase() {
+      const p = phases[active];
+      const colorVar = `var(${p.color})`;
+      const bgVar = `var(${p.bg})`;
+      const borderVar = `var(${p.border})`;
+
+      const phaseTopics = p.sections.flatMap((s, si) => s.topics.map((_, ti) => `${p.id}-${s.name}-${ti}`));
+      const phaseDone = phaseTopics.filter(k => state[k]).length;
+      const phaseTotal = phaseTopics.length;
+
+      const sectionsHtml = p.sections.map(s => {
+        const rows = s.topics.map((t, i) => {
+          const key = `${p.id}-${s.name}-${i}`;
+          const done = !!state[key];
+          return `
+        <div class="topic-row" onclick="toggle('${key}')">
+          <div class="check ${done ? 'done' : ''}" style="${done ? `background:${bgVar};border-color:${colorVar};` : ''}"></div>
+          <div>
+            <div class="topic-text ${done ? 'done' : ''}">${t.text}${t.proj ? '<span class="proj-tag">project</span>' : ''}</div>
+            <div class="topic-sub">${t.sub}</div>
+          </div>
+        </div>`;
+        }).join('');
+        return `<div class="section-block"><div class="section-header">${s.name}</div>${rows}</div>`;
+      }).join('');
+
+      const resHtml = p.resources.map(r => `<span class="res-chip">${r}</span>`).join('');
+
+      document.getElementById('phase-content').innerHTML = `
+    <div class="phase-card" style="border-color:${borderVar};">
+      <div class="phase-top">
+        <div>
+          <div class="phase-name" style="background:${bgVar};color:${colorVar};border:1px solid ${borderVar};">${p.badge}</div>
+          <div class="phase-title">${p.title}</div>
+          <div class="phase-duration">${p.duration}</div>
+        </div>
+        <div class="phase-progress-mini">
+          <span style="color:${colorVar};">${phaseDone}</span> / ${phaseTotal}<br>
+          <span style="font-size:10px;color:var(--dim);">topics done</span>
+        </div>
+      </div>
+      ${sectionsHtml}
+      <div class="resources-row">
+        <span class="res-label">Resources</span>
+        ${resHtml}
+      </div>
+    </div>`;
+    }
+
+    function toggle(key) {
+      state[key] = !state[key];
+      renderPhase();
+      updateProgress();
+    }
+
+    function switchPhase(id) {
+      active = id;
+      renderTabs();
+      renderPhase();
+    }
+
+    renderTabs();
+    renderPhase();
+    updateProgress();
+  </script>
+</body>
+
+</html>
